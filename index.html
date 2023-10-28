@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-weight: 100;
+     
+        background: radial-gradient(circle, rgb(195 232 255) 0%, rgb(65 159 217) 100%);
+        background-size: cover;
+        }
+    
+        h1 {
+            color: #003333;
+            font-weight: 100;
+            font-size: 50px;
+            margin: 20px;
+            padding: 10px;
+        }
+    
+
+        #clockdiv {
+            font-family: sans-serif;
+            color: #fff;
+            display: inline-block;
+            font-weight: 100;
+            text-align: center;
+            font-size: 70px;
+            position: relative;
+            z-index: 10;
+        }
+    
+        #clockdiv > div {
+            padding: 10px;
+            border-radius: 3px;
+            background: #003333;
+            display: inline-block;
+        }
+    
+        #clockdiv div > span {
+            padding: 30px;
+            border-radius: 10px;
+            background: #0D4D4D;
+            display: inline-block;
+        }
+    
+        .smalltext {
+            padding-top: 5px;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="all">
+        <div id="clockdiv">
+            <h1 id="title" class=w3-black>Đếm ngược</h1>
+            <div>
+                <span class="hours"></span>
+                <div class="smalltext">Giờ</div>
+            </div>
+            <div>
+                <span class="minutes"></span>
+                <div class="smalltext">Phút</div>
+            </div>
+            <div>
+                <span class="seconds"></span>
+                <div class="smalltext">Giây</div>
+            </div>
+        </div>
+    </div>
+  
+    <script>
+        //set the total time in milliseconds for the deadline variable at the bottom
+    
+        function getTimeRemaining(endtime) {
+            var t = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((t / 1000) % 60);
+            var minutes = Math.floor((t / 1000 / 60) % 60);
+            var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    
+            return {
+                'total': t,
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': seconds
+            };
+        }
+    
+        function initializeClock(id, endtime) {
+            var clock = document.getElementById(id);
+    
+            var hoursSpan = clock.querySelector('.hours');
+            var minutesSpan = clock.querySelector('.minutes');
+            var secondsSpan = clock.querySelector('.seconds');
+    
+            function updateClock() {
+                var t = getTimeRemaining(endtime);
+    
+                // document.getElementById("myBar").style.height = ((100-(t.total / totalmseconds * 100)).toString() + "%");
+                //    document.getElementById("myBar").style.height = ((t.total / totalmseconds * 1000).toString() + "px");
+    
+                //  document.getElementById("title").innerHTML = ((t.total/totalmseconds*100).toString()+"%");
+    
+                hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+    
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                }
+            }
+    
+            updateClock();
+            var timeinterval = setInterval(updateClock, 1000);
+        }
+    
+        var deadline = new Date(Date.parse(new Date()) + 5 * 60 * 1000);
+        var totalmseconds = Date.parse(deadline) - Date.parse(new Date());
+        initializeClock('clockdiv', deadline);
+    </script>
+    
+</body>
+</html>
